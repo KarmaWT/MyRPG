@@ -1,0 +1,396 @@
+.modalOverlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(34, 34, 54, 0.85);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modalContent {
+  background: #16213e;
+  color: #a7ffeb;
+  border-radius: 28px;
+  box-shadow: 0 0 40px #3d0066;
+  width: 98vw;
+  max-width: 720px;
+  padding: 12px 24px; /* diminui o espaçamento vertical, mantém o horizontal */
+  position: relative;
+  border: 2px solid #149ea3;
+  animation: modalSlideIn 0.3s;
+}
+
+@keyframes modalSlideIn {
+  from { transform: translateY(-40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px; /* diminuído de 24px para 8px */
+  padding-bottom: 0;  /* remove qualquer padding extra */
+}
+
+.modalTitle {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #a7ffeb;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  color: #b39ddb;
+  font-size: 2.2rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.closeButton:hover {
+  color: #fff;
+}
+
+.modalBody {
+  max-height: 65vh;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.loading {
+  text-align: center;
+  color: #b39ddb;
+  font-size: 1.2rem;
+}
+
+.error {
+  color: #ff4d4d;
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+.deusList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.deusItem {
+  margin-bottom: 18px;
+}
+
+.deusButton {
+  width: 100%;
+  background: #3d0066;
+  color: #a7ffeb;
+  border: none;
+  border-radius: 16px;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+  font-size: 1.1rem;
+  box-shadow: 0 0 10px #149ea3;
+  display: flex;
+  align-items: center;
+}
+
+.deusButton:hover {
+  background: #149ea3;
+  color: #fff;
+  box-shadow: 0 0 16px #b39ddb;
+}
+
+.deusInfo {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 18px 20px;
+}
+
+.deusFoto {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #b39ddb;
+  box-shadow: 0 0 12px #149ea3;
+  background: #fff;
+}
+
+.deusText {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 8px;
+  flex: 1;
+}
+
+.deusNomeRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 2px;
+}
+
+.deusIcon {
+  font-size: 1.3rem;
+  color: #149ea3;
+}
+
+.deusNome {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #a7ffeb;
+}
+
+.deusHistoria {
+  font-size: 1rem;
+  color: #b39ddb;
+  line-height: 1.4;
+  margin-top: 2px;
+  font-style: italic;
+  word-break: break-word;
+}
+
+/* Cards personalizados por deus */
+.deusCardApolo {
+  background: #ffe082 !important;
+  color: #3d0066 !important;
+  border: 2px solid #ffd600 !important;
+}
+.deusFotoApolo { border-color: #ffd600 !important; }
+.deusIconApolo { color: #ffd600 !important; }
+.deusNomeApolo { color: #3d0066 !important; }
+.deusHistoriaApolo { color: #3d0066 !important; }
+
+.deusCardAfrodite {
+  background: #f8bbd0 !important;
+  color: #ad1457 !important;
+  border: 2px solid #f48fb1 !important;
+}
+.deusFotoAfrodite { border-color: #f48fb1 !important; }
+.deusIconAfrodite { color: #ad1457 !important; }
+.deusNomeAfrodite { color: #ad1457 !important; }
+.deusHistoriaAfrodite { color: #ad1457 !important; }
+
+.deusCardAres {
+  background: #ff5252 !important;
+  color: #fff !important;
+  border: 2px solid #b71c1c !important;
+}
+.deusFotoAres { border-color: #b71c1c !important; }
+.deusIconAres { color: #b71c1c !important; }
+.deusNomeAres { color: #fff !important; }
+.deusHistoriaAres { color: #fff !important; }
+
+.deusCardZeus {
+  background: #ececec !important;
+  color: #ffd600 !important;
+  border: 2px solid #ffd600 !important;
+}
+.deusFotoZeus { border-color: #ffd600 !important; }
+.deusIconZeus { color: #ffd600 !important; }
+.deusNomeZeus { color: #ffd600 !important; }
+.deusHistoriaZeus { color: #ffd600 !important; }
+
+.deusCardAtena {
+  background: #b2dfdb !important;
+  color: #00695c !important;
+  border: 2px solid #26a69a !important;
+}
+.deusFotoAtena { border-color: #26a69a !important; }
+.deusIconAtena { color: #00695c !important; }
+.deusNomeAtena { color: #00695c !important; }
+.deusHistoriaAtena { color: #00695c !important; }
+
+.deusCardPoseidon {
+  background: #81d4fa !important;
+  color: #01579b !important;
+  border: 2px solid #0288d1 !important;
+}
+.deusFotoPoseidon { border-color: #0288d1 !important; }
+.deusIconPoseidon { color: #01579b !important; }
+.deusNomePoseidon { color: #01579b !important; }
+.deusHistoriaPoseidon { color: #01579b !important; }
+
+.deusCardHades {
+  background: #212121 !important;
+  color: #bdbdbd !important;
+  border: 2px solid #616161 !important;
+}
+.deusFotoHades { border-color: #616161 !important; }
+.deusIconHades { color: #bdbdbd !important; }
+.deusNomeHades { color: #bdbdbd !important; }
+.deusHistoriaHades { color: #bdbdbd !important; }
+
+.deusCardHermes {
+  background: #ffe0b2 !important;
+  color: #ff9800 !important;
+  border: 2px solid #ffb300 !important;
+}
+.deusFotoHermes { border-color: #ffb300 !important; }
+.deusIconHermes { color: #ff9800 !important; }
+.deusNomeHermes { color: #ff9800 !important; }
+.deusHistoriaHermes { color: #ff9800 !important; }
+
+.deusCardDionisio {
+  background: #ce93d8 !important;
+  color: #4a148c !important;
+  border: 2px solid #8e24aa !important;
+}
+.deusFotoDionisio { border-color: #8e24aa !important; }
+.deusIconDionisio { color: #4a148c !important; }
+.deusNomeDionisio { color: #4a148c !important; }
+.deusHistoriaDionisio { color: #4a148c !important; }
+
+.deusCardArtemis {
+  background: #cfd8dc !important;
+  color: #37474f !important;
+  border: 2px solid #90a4ae !important;
+}
+.deusFotoArtemis { border-color: #90a4ae !important; }
+.deusIconArtemis { color: #37474f !important; }
+.deusNomeArtemis { color: #37474f !important; }
+.deusHistoriaArtemis { color: #37474f !important; }
+
+.deusCardHestia {
+  background: #ffe0b2 !important;
+  color: #ff7043 !important;
+  border: 2px solid #ff7043 !important;
+}
+.deusFotoHestia { border-color: #ff7043 !important; }
+.deusIconHestia { color: #ff7043 !important; }
+.deusNomeHestia { color: #ff7043 !important; }
+.deusHistoriaHestia { color: #ff7043 !important; }
+
+.deusCardHefesto {
+  background: #bdbdbd !important;
+  color: #6d4c41 !important;
+  border: 2px solid #6d4c41 !important;
+}
+.deusFotoHefesto { border-color: #6d4c41 !important; }
+.deusIconHefesto { color: #6d4c41 !important; }
+.deusNomeHefesto { color: #6d4c41 !important; }
+.deusHistoriaHefesto { color: #6d4c41 !important; }
+
+.deusCardPersefone {
+  background: #e1bee7 !important;
+  color: #4a148c !important;
+  border: 2px solid #7c43bd !important;
+}
+.deusFotoPersefone { border-color: #7c43bd !important; }
+.deusIconPersefone { color: #4a148c !important; }
+.deusNomePersefone { color: #4a148c !important; }
+.deusHistoriaPersefone { color: #4a148c !important; }
+
+.deusCardHecate {
+  background: #212121 !important;
+  color: #fffde7 !important;
+  border: 2px solid #fffde7 !important;
+}
+.deusFotoHecate { border-color: #fffde7 !important; }
+.deusIconHecate { color: #fffde7 !important; }
+.deusNomeHecate { color: #fffde7 !important; }
+.deusHistoriaHecate { color: #fffde7 !important; }
+
+.deusCardNyx {
+  background: #263238 !important;
+  color: #bdbdbd !important;
+  border: 2px solid #bdbdbd !important;
+}
+.deusFotoNyx { border-color: #bdbdbd !important; }
+.deusIconNyx { color: #bdbdbd !important; }
+.deusNomeNyx { color: #bdbdbd !important; }
+.deusHistoriaNyx { color: #bdbdbd !important; }
+
+.deusCardEris {
+  background: #f44336 !important;
+  color: #fff !important;
+  border: 2px solid #b71c1c !important;
+}
+.deusFotoEris { border-color: #b71c1c !important; }
+.deusIconEris { color: #fff !important; }
+.deusNomeEris { color: #fff !important; }
+.deusHistoriaEris { color: #fff !important; }
+
+.deusCardDemeter {
+  background: #c5e1a5 !important;
+  color: #33691e !important;
+  border: 2px solid #689f38 !important;
+}
+.deusFotoDemeter { border-color: #689f38 !important; }
+.deusIconDemeter { color: #33691e !important; }
+.deusNomeDemeter { color: #33691e !important; }
+.deusHistoriaDemeter { color: #33691e !important; }
+
+.deusCardHipnos {
+  background: #b3e5fc !important;
+  color: #01579b !important;
+  border: 2px solid #0288d1 !important;
+}
+.deusFotoHipnos { border-color: #0288d1 !important; }
+.deusIconHipnos { color: #01579b !important; }
+.deusNomeHipnos { color: #01579b !important; }
+.deusHistoriaHipnos { color: #01579b !important; }
+
+.deusCardChronos {
+  background: #fff9c4 !important;
+  color: #fbc02d !important;
+  border: 2px solid #fbc02d !important;
+}
+.deusFotoChronos { border-color: #fbc02d !important; }
+.deusIconChronos { color: #fbc02d !important; }
+.deusNomeChronos { color: #fbc02d !important; }
+.deusHistoriaChronos { color: #fbc02d !important; }
+
+.deusCardCaos {
+  background: #bdbdbd !important;
+  color: #212121 !important;
+  border: 2px solid #212121 !important;
+}
+.deusFotoCaos { border-color: #212121 !important; }
+.deusIconCaos { color: #212121 !important; }
+.deusNomeCaos { color: #212121 !important; }
+.deusHistoriaCaos { color: #212121 !important; }
+
+.deusCardHera {
+  background: #f3e5f5 !important;
+  color: #6a1b9a !important;
+  border: 2px solid #ab47bc !important;
+}
+.deusFotoHera { border-color: #ab47bc !important; }
+.deusIconHera { color: #6a1b9a !important; }
+.deusNomeHera { color: #6a1b9a !important; }
+.deusHistoriaHera { color: #6a1b9a !important; }
+
+@media (max-width: 600px) {
+  .modalContent {
+    padding: 8px 4px; /* diminui ainda mais o espaçamento vertical em telas pequenas */
+    max-width: 98vw;
+  }
+  .deusFoto {
+    width: 70px;
+    height: 70px;
+  }
+  .deusNomeRow {
+    gap: 6px;
+  }
+  .deusNome {
+    font-size: 1rem;
+  }
+  .deusHistoria {
+    font-size: 0.9rem;
+  }
+}

@@ -1,0 +1,116 @@
+.container {
+  background: #fff; /* fundo branco */
+  min-height: 100vh;
+  padding: 32px 10vw; /* afastamento horizontal */
+  color: #fff;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.searchBar {
+  flex: 1;
+  padding: 10px 16px;
+  border: 2px solid #00ffe7;
+  border-radius: 8px;
+  background: #2a0050;
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+}
+
+.searchBar::placeholder {
+  color: #b3b3b3;
+}
+
+.createButton {
+  padding: 10px 24px;
+  background: #00ffe7;
+  color: #3a006e;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.createButton:hover {
+  background: #00bfae;
+}
+
+.hr {
+  border: none;
+  border-top: 2px solid #00ffe7;
+  margin: 24px 0;
+}
+
+.cards {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.card {
+  background: #2a0050;
+  border: 2px solid #00ffe7;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px #6c2eb7;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  min-width: 260px;
+  max-width: 320px;
+  margin-bottom: 16px;
+}
+
+.avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 2px solid #00ffe7;
+  box-shadow: 0 0 12px #6c2eb7;
+  margin-right: 18px;
+  object-fit: cover;
+}
+
+.info {
+  flex: 1;
+}
+
+.name {
+  margin: 0 0 8px 0;
+  font-size: 1.2rem;
+  color: #fff;
+  text-shadow: 0 0 8px #6c2eb7;
+}
+
+.gloria {
+  margin: 0 0 12px 0;
+  color: #00ffe7;
+  font-weight: bold;
+  font-size: 1rem;
+  text-shadow: 0 0 4px #6c2eb7;
+}
+
+.viewButton {
+  padding: 8px 18px;
+  background: #3a006e;
+  color: #fff;
+  border: 2px solid #00ffe7;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0 8px #00ffe7;
+  transition: background 0.2s;
+}
+
+.viewButton:hover {
+  background: #6c2eb7;
+}

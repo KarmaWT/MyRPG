@@ -1,0 +1,196 @@
+/* Card do Personagem */
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  border: 2px solid transparent;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #6A0DAD 0%, #2C7A7B 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 12px 40px rgba(106, 13, 173, 0.15);
+  border-color: #6A0DAD;
+}
+
+.card:hover::before {
+  opacity: 0.05;
+}
+
+.card:focus {
+  outline: 2px solid #6A0DAD;
+  outline-offset: 4px;
+}
+
+/* Container do Avatar */
+.avatarContainer {
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid #6A0DAD;
+  box-shadow: 
+    0 0 0 2px rgba(106, 13, 173, 0.1),
+    0 4px 15px rgba(44, 122, 123, 0.2);
+  object-fit: cover;
+  transition: all 0.3s ease;
+}
+
+.card:hover .avatar {
+  transform: scale(1.1);
+  box-shadow: 
+    0 0 0 3px rgba(106, 13, 173, 0.2),
+    0 6px 25px rgba(44, 122, 123, 0.35);
+}
+
+.avatarFallback {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid #6A0DAD;
+  background: linear-gradient(135deg, #6A0DAD 0%, #5A0C9C 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: white;
+  box-shadow: 
+    0 0 0 2px rgba(106, 13, 173, 0.1),
+    0 4px 15px rgba(44, 122, 123, 0.2);
+  transition: all 0.3s ease;
+}
+
+.card:hover .avatarFallback {
+  transform: scale(1.1);
+  box-shadow: 
+    0 0 0 3px rgba(106, 13, 173, 0.2),
+    0 6px 25px rgba(44, 122, 123, 0.35);
+}
+
+/* Nome do Personagem */
+.characterName {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #6A0DAD;
+  margin: 0 0 1rem 0;
+  transition: all 0.3s ease;
+  text-shadow: 0 1px 2px rgba(106, 13, 173, 0.1);
+}
+
+.card:hover .characterName {
+  color: #5A0C9C;
+  transform: translateY(-2px);
+  text-shadow: 0 2px 4px rgba(106, 13, 173, 0.2);
+}
+
+/* Ações do Card */
+.cardActions {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+}
+
+.card:hover .cardActions {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.actionButton {
+  background: rgba(106, 13, 173, 0.1);
+  border: 1px solid rgba(106, 13, 173, 0.2);
+  border-radius: 8px;
+  padding: 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+}
+
+.actionButton:hover {
+  background: rgba(106, 13, 173, 0.2);
+  border-color: rgba(106, 13, 173, 0.4);
+  transform: scale(1.1);
+}
+
+.actionButton:focus {
+  outline: 2px solid #6A0DAD;
+  outline-offset: 2px;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .card {
+    padding: 1.25rem;
+  }
+  
+  .avatar,
+  .avatarFallback {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .avatarFallback {
+    font-size: 1.75rem;
+  }
+  
+  .characterName {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 1rem;
+  }
+  
+  .avatar,
+  .avatarFallback {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .avatarFallback {
+    font-size: 1.5rem;
+  }
+  
+  .characterName {
+    font-size: 1rem;
+  }
+  
+  .cardActions {
+    opacity: 1;
+    transform: translateY(0);
+    margin-top: 0.5rem;
+  }
+}

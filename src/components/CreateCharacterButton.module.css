@@ -1,0 +1,101 @@
+/* Botão Criar Nova Ficha */
+.createButton {
+  background: linear-gradient(135deg, #6A0DAD 0%, #5A0C9C 100%);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(106, 13, 173, 0.2);
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  font-family: inherit;
+  letter-spacing: 0.025em;
+}
+
+.createButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.createButton:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(106, 13, 173, 0.35);
+  background: linear-gradient(135deg, #7A1DBD 0%, #6A1CAC 100%);
+}
+
+.createButton:hover::before {
+  left: 100%;
+}
+
+.createButton:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 4px 15px rgba(106, 13, 173, 0.3);
+}
+
+.createButton:focus {
+  outline: 2px solid #6A0DAD;
+  outline-offset: 4px;
+}
+
+.buttonIcon {
+  font-size: 1.1rem;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.3));
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .createButton {
+    padding: 0.875rem 1.5rem;
+    font-size: 0.95rem;
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .createButton {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
+  }
+  
+  .buttonIcon {
+    font-size: 1rem;
+  }
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalContent {
+  background: #fff;
+  border-radius: 8px;
+  padding: 2rem;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  position: relative;
+}

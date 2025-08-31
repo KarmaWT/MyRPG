@@ -294,7 +294,6 @@ export default function CriarFicha() {
     setLoading(true);
     setError(null);
     setSuccess(false);
-    // Dados mínimos para o banco
     // Busca ids das perícias do banco
     let periciasDb = [];
     let periciaNomeToId = {};
@@ -303,6 +302,79 @@ export default function CriarFicha() {
       periciasDb = data || [];
       periciasDb.forEach(p => { periciaNomeToId[p.nome] = p.id });
     }
+
+    // Calcula atributos finais (manual + bônus das bênçãos)
+    const atributosFinais = { ...atributos };
+    [
+      { nome: 'Força', key: 'forca' },
+      { nome: 'Agilidade', key: 'agilidade' },
+      { nome: 'Vigor', key: 'vigor' },
+      { nome: 'Inteligência', key: 'inteligencia' },
+      { nome: 'Presença', key: 'presenca' },
+      { nome: 'Sorte', key: 'sorte' }
+    ].forEach(attr => {
+      let bonus = 0;
+      bencaos.forEach(b => {
+        if (!b.niveis || !b.nivelSelecionado) return;
+        b.niveis.filter(n => n.nivel <= b.nivelSelecionado).forEach(n => {
+          if (n.bonusAtributo && n.bonusAtributo.toLowerCase() === attr.nome.toLowerCase()) {
+            bonus += Number(n.valorAtributo) || 0;
+          }
+        });
+      });
+      atributosFinais[attr.key] += bonus;
+    });
+
+    // Calcula perícias finais (manual + bônus das bênçãos)
+    const periciasFinais = {};
+    periciasBanco.forEach(pericia => {
+      let bonus = 0;
+      bencaos.forEach(b => {
+        if (!b.niveis || !b.nivelSelecionado) return;
+        b.niveis.filter(n => n.nivel <= b.nivelSelecionado).forEach(n => {
+          if (n.bonusPericia === pericia.nome) {
+            bonus += Number(n.valorPericia) || 0;
+          }
+        });
+      });
+      const valorManual = periciasValores[pericia.nome] || 0;
+      periciasFinais[pericia.nome] = valorManual + bonus;
+    });
+
+    // Monta array de bênçãos para salvar
+    // Busca todas as bênçãos do banco para encontrar o id correto
+    let bencaosDb = [];
+    if (supabase && supabase.from) {
+      const { data } = await supabase.from('bencao').select('id,nome,nivel,deus_id');
+      bencaosDb = data || [];
+    }
+    const bencaosSalvar = bencaos.map(b => {
+      // Pega o nível selecionado
+      const nivelObj = b.niveis.find(n => n.nivel === b.nivelSelecionado);
+      // Busca o id da bênção correspondente no banco
+      let bencaoId = null;
+      if (nivelObj && b.deus && bencaosDb.length > 0) {
+        const match = bencaosDb.find(dbBencao =>
+          dbBencao.nome === nivelObj.nome &&
+          dbBencao.nivel === b.nivelSelecionado &&
+          (!b.deus.id || dbBencao.deus_id === b.deus.id)
+        );
+        if (match) bencaoId = match.id;
+      }
+      return {
+        id: bencaoId,
+        deus_nome: b.deus.nome,
+        deus_foto: b.deus.foto,
+        nome: nivelObj?.nome || '',
+        descricao: nivelObj?.descricao || '',
+        nivel: b.nivelSelecionado,
+        bonusAtributo: nivelObj?.bonusAtributo || '',
+        valorAtributo: nivelObj?.valorAtributo || 0,
+        bonusPericia: nivelObj?.bonusPericia || '',
+        valorPericia: nivelObj?.valorPericia || 0,
+        automatica: !!b.automatica
+      };
+    });
 
     const characterData = {
       nome,
@@ -314,21 +386,21 @@ export default function CriarFicha() {
       user_id: userId,
       pai_id: divindadePai ? divindadePai.id : null,
       mae_id: divindadeMae ? divindadeMae.id : null,
-      forca: atributos.forca,
-      agilidade: atributos.agilidade,
-      vigor: atributos.vigor,
-      inteligencia: atributos.inteligencia,
-      presenca: atributos.presenca,
-      sorte: atributos.sorte,
+      forca: atributosFinais.forca,
+      agilidade: atributosFinais.agilidade,
+      vigor: atributosFinais.vigor,
+      inteligencia: atributosFinais.inteligencia,
+      presenca: atributosFinais.presenca,
+      sorte: atributosFinais.sorte,
       vida: getVida(nivel),
       vida_atual: getVida(nivel),
       mental: getMental(nivel),
       mental_atual: getMental(nivel),
       inventario: '',
       lore: '',
-      pericias: periciasValores,
+      pericias: periciasFinais,
       periciasBanco: periciasDb,
-      bencaos: []
+      bencaos: bencaosSalvar
     };
     // Salva personagem
     const result = await salvarPersonagemCompleto(characterData, userId);
@@ -614,38 +686,54 @@ export default function CriarFicha() {
                 </span>
               </div>
               <div className={styles.atributosGrid}>
-                {[
+                {[ 
                   { nome: 'Força', key: 'forca', icon: 'fas fa-fist-raised' },
                   { nome: 'Agilidade', key: 'agilidade', icon: 'fas fa-running' },
                   { nome: 'Vigor', key: 'vigor', icon: 'fas fa-heart' },
                   { nome: 'Inteligência', key: 'inteligencia', icon: 'fas fa-brain' },
                   { nome: 'Presença', key: 'presenca', icon: 'fas fa-star' },
                   { nome: 'Sorte', key: 'sorte', icon: 'fas fa-clover' }
-                ].map(attr => (
-                  <div key={attr.key} className={styles.atributoCard}>
-                    <div className={styles.atributoHeader}>
-                      <span className={styles.atributoIcon}><i className={attr.icon}></i></span>
-                      <span className={styles.atributoNome}>{attr.nome}</span>
+                ].map(attr => {
+                  // Soma dos bônus das bênçãos ativas para este atributo
+                  let bonusAtributo = 0;
+                  bencaos.forEach(b => {
+                    if (!b.niveis || !b.nivelSelecionado) return;
+                    b.niveis.filter(n => n.nivel <= b.nivelSelecionado).forEach(n => {
+                      if (n.bonusAtributo && n.bonusAtributo.toLowerCase() === attr.nome.toLowerCase()) {
+                        bonusAtributo += Number(n.valorAtributo) || 0;
+                      }
+                    });
+                  });
+                  const valorManual = atributos[attr.key] || 0;
+                  const valorFinal = valorManual + bonusAtributo;
+                  return (
+                    <div key={attr.key} className={styles.atributoCard}>
+                      <div className={styles.atributoHeader}>
+                        <span className={styles.atributoIcon}><i className={attr.icon}></i></span>
+                        <span className={styles.atributoNome}>{attr.nome}</span>
+                      </div>
+                      <div className={styles.atributoValueGroup}>
+                        <button
+                          type="button"
+                          className={styles.atributoBtn}
+                          onClick={() => handleAtributoChange(attr.key, -1)}
+                          aria-label={`Diminuir ${attr.nome}`}
+                          disabled={valorManual <= 1}
+                        >-</button>
+                        <span className={styles.atributoValue} style={bonusAtributo > 0 ? { color: '#149ea3', fontWeight: 'bold' } : {}}>
+                          {valorFinal}
+                        </span>
+                        <button
+                          type="button"
+                          className={styles.atributoBtn}
+                          onClick={() => handleAtributoChange(attr.key, 1)}
+                          aria-label={`Aumentar ${attr.nome}`}
+                          disabled={pontosDisponiveis <= 0}
+                        >+</button>
+                      </div>
                     </div>
-                    <div className={styles.atributoValueGroup}>
-                      <button
-                        type="button"
-                        className={styles.atributoBtn}
-                        onClick={() => handleAtributoChange(attr.key, -1)}
-                        aria-label={`Diminuir ${attr.nome}`}
-                        disabled={atributos[attr.key] <= 1}
-                      >-</button>
-                      <span className={styles.atributoValue}>{atributos[attr.key]}</span>
-                      <button
-                        type="button"
-                        className={styles.atributoBtn}
-                        onClick={() => handleAtributoChange(attr.key, 1)}
-                        aria-label={`Aumentar ${attr.nome}`}
-                        disabled={pontosDisponiveis <= 0}
-                      >+</button>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>

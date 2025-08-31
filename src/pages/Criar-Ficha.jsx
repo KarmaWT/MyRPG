@@ -154,8 +154,16 @@ export default function CriarFicha() {
     if (modalTipo === 'pai') {
       setProgenitorPai(true)
       setDivindadePai(deus)
-      // Remove bênçãos automáticas do pai anterior
-      setBencaos(prev => prev.filter(b => !(b.automatica && b.deus.nome !== deus.nome)));
+      // Para Deus Menor, não remove bênçãos automáticas do outro progenitor
+      setBencaos(prev => {
+        if (isDeusMenor) {
+          // Remove apenas bênçãos automáticas do mesmo deus
+          return prev.filter(b => !(b.automatica && b.deus.nome === deus.nome));
+        } else {
+          // Remove todas automáticas exceto do novo deus
+          return prev.filter(b => !b.automatica);
+        }
+      });
       // Adiciona bênção automática do novo pai
       getBencaos().then(bencaosDb => {
         const bencaosDoDeus = bencaosDb.filter(b => b.deus_id === deus.id);
@@ -198,8 +206,16 @@ export default function CriarFicha() {
     if (modalTipo === 'mae') {
       setProgenitorMae(true)
       setDivindadeMae(deus)
-      // Remove bênçãos automáticas da mãe anterior
-      setBencaos(prev => prev.filter(b => !(b.automatica && b.deus.nome !== deus.nome)));
+      // Para Deus Menor, não remove bênçãos automáticas do outro progenitor
+      setBencaos(prev => {
+        if (isDeusMenor) {
+          // Remove apenas bênçãos automáticas do mesmo deus
+          return prev.filter(b => !(b.automatica && b.deus.nome === deus.nome));
+        } else {
+          // Remove todas automáticas exceto do novo deus
+          return prev.filter(b => !b.automatica);
+        }
+      });
       // Adiciona bênção automática da nova mãe
       getBencaos().then(bencaosDb => {
         const bencaosDoDeus = bencaosDb.filter(b => b.deus_id === deus.id);
@@ -711,31 +727,32 @@ export default function CriarFicha() {
             </div>
           </div>
 
+          {/* Carrossel de bênçãos atribuídas - movido para dentro da section personagem */}
+          <div className="row mt-3">
+            <div className="col-md-12">
+              <h2 className={styles.nivelTitle} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <i className="fas fa-hands-helping"></i> Bênçãos
+              </h2>
+              <BencaoCarrossel
+                bencaos={bencaos}
+                onAdd={() => {
+                  setModalTipo('bencao');
+                  setModalOpen(true);
+                }}
+                CardBencao={CardBencao}
+                onNivelChange={(idx, nivel) => {
+                  setBencaos(prev => prev.map((b, i) => i === idx ? { ...b, nivelSelecionado: nivel } : b));
+                }}
+                onRemove={idx => {
+                  setBencaos(prev => prev.filter((_, i) => i !== idx));
+                }}
+              />
+            </div>
+          </div>
+
         </div>
       </section>
 
-      {/* Carrossel de bênçãos atribuídas */}
-      <div className="row mt-3">
-        <div className="col-md-12">
-          <h2 className={styles.nivelTitle} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <i className="fas fa-hands-helping"></i> Bênçãos
-          </h2>
-          <BencaoCarrossel
-            bencaos={bencaos}
-            onAdd={() => {
-              setModalTipo('bencao');
-              setModalOpen(true);
-            }}
-            CardBencao={CardBencao}
-            onNivelChange={(idx, nivel) => {
-              setBencaos(prev => prev.map((b, i) => i === idx ? { ...b, nivelSelecionado: nivel } : b));
-            }}
-            onRemove={idx => {
-              setBencaos(prev => prev.filter((_, i) => i !== idx));
-            }}
-          />
-        </div>
-      </div>
       <div className="d-flex justify-content-end mt-3">
         <button
           className={styles.btnSalvar}

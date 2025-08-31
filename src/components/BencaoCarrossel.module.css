@@ -11,7 +11,7 @@
   margin: 2rem 0;
   color: var(--color-text, #a7ffeb);
   border: 2px solid var(--color-ciano-escuro, #149ea3);
-  max-width: 900px;
+  max-width: 100%;
 }
 
 .carrosselHeader {

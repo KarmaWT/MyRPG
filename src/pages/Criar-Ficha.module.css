@@ -1,3 +1,9 @@
+.periciaBonusInput {
+  background: rgba(20,158,163,0.12);
+  border: 2px solid #149ea3;
+  color: #149ea3;
+  box-shadow: 0 0 8px #149ea3;
+}
 /* Paleta:
    Roxo escuro: #3d0066
    Roxo claro: #b39ddb
@@ -766,14 +772,18 @@
 .periciaItem {
   display: flex;
   align-items: center;
-  gap: 10px;
+  width: 100%;
+  gap: 18px;
   margin-bottom: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 
 .periciaInput {
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   border: 1.5px solid var(--color-ciano-escuro);
   border-radius: 6px;
   background: var(--color-bg-card);
@@ -793,5 +803,12 @@
   border-color: var(--color-ciano-claro);
   box-shadow: 0 0 8px var(--color-ciano-escuro);
   outline: none;
+}
+
+/* Destaque visual para nome da perícia com bônus */
+.periciaBonusNome {
+  color: #149ea3 !important;
+  text-shadow: 0 0 8px #149ea3, 0 2px 8px #3d0066;
+  font-weight: bold;
 }
 

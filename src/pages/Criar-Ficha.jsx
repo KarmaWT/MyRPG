@@ -649,21 +649,62 @@ export default function CriarFicha() {
                       <span className={styles.periciaIcon}><i className={attr.icon}></i></span>
                       <span className={styles.periciaAtributo}>{attr.nome}</span>
                     </div>
-                    {periciasBanco.filter(p => p.atributo_base === attr.key).map(pericia => (
-                      <div key={pericia.nome} className={styles.periciaItem}>
-                        <input
-                          type="number"
-                          className={styles.periciaInput}
-                          min={0}
-                          value={periciasValores[pericia.nome]}
-                          onChange={e => {
-                            const val = Number(e.target.value);
-                            setPericiasValores(prev => ({ ...prev, [pericia.nome]: val }));
-                          }}
-                        />
-                        <span>{pericia.nome}</span>
-                      </div>
-                    ))}
+                    {periciasBanco.filter(p => p.atributo_base === attr.key).map(pericia => {
+                      // Limite manual por nível
+                      const limiteManual = nivel === 1 ? 10 : nivel === 2 ? 15 : 20;
+                      // Soma dos bônus das bênçãos ativas para esta perícia
+                      let bonus = 0;
+                      bencaos.forEach(b => {
+                        if (!b.niveis || !b.nivelSelecionado) return;
+                        // Acumula bônus de todos os níveis até o selecionado
+                        b.niveis.filter(n => n.nivel <= b.nivelSelecionado).forEach(n => {
+                          if (n.bonusPericia === pericia.nome) {
+                            bonus += Number(n.valorPericia) || 0;
+                          }
+                        });
+                      });
+                      const valorManual = periciasValores[pericia.nome] || 0;
+                      const valorFinal = valorManual + bonus;
+                      return (
+                        <div key={pericia.nome} className={styles.periciaItem}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1 }}>
+                            <input
+                              type="number"
+                              className={styles.periciaInput}
+                              min={0}
+                              max={limiteManual}
+                              value={valorManual}
+                              onChange={e => {
+                                let val = Number(e.target.value);
+                                if (val > limiteManual) val = limiteManual;
+                                if (val < 0) val = 0;
+                                setPericiasValores(prev => ({ ...prev, [pericia.nome]: val }));
+                              }}
+                            />
+                            <span className={bonus > 0 ? styles.periciaBonusNome : ''}>{pericia.nome}</span>
+                          </div>
+                          <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
+                            <input
+                              type="text"
+                              readOnly
+                              value={valorFinal}
+                              className={
+                                bonus > 0
+                                  ? `${styles.periciaInput} ${styles.periciaBonusInput}`
+                                  : styles.periciaInput
+                              }
+                              style={{
+                                fontWeight: 'bold',
+                                color: bonus > 0 ? '#149ea3' : '#b39ddb',
+                                background: bonus > 0 ? 'rgba(20,158,163,0.12)' : '',
+                                borderColor: bonus > 0 ? '#149ea3' : '',
+                                boxShadow: bonus > 0 ? '0 0 8px #149ea3' : '',
+                              }}
+                            />
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 ))}
               </div>

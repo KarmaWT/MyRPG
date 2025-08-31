@@ -1,0 +1,122 @@
+.removeBtn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--color-roxo-escuro);
+  color: var(--color-ciano-claro);
+  border: none;
+  box-shadow: 0 0 8px var(--color-ciano-claro);
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+.removeBtn:hover {
+  background: var(--color-ciano-claro);
+  color: var(--color-roxo-escuro);
+  box-shadow: 0 0 16px var(--color-ciano-claro);
+  transform: scale(1.1);
+}
+
+:root {
+  --color-roxo-escuro: #3d0066;
+  --color-roxo-claro: #b39ddb;
+  --color-ciano-escuro: #149ea3;
+  --color-ciano-claro: #a7ffeb;
+  --color-bg-card: #16213e;
+  --color-text: #a7ffeb;
+  --color-highlight: #ffe082;
+}
+
+.card {
+  background: var(--color-bg-card);
+  border-radius: 16px;
+  box-shadow: 0 0 16px 2px var(--color-roxo-escuro);
+  padding: 1.7rem 1.2rem;
+  margin: 1.2rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  max-width: 420px;
+  color: var(--color-text);
+  border: 2px solid var(--color-ciano-escuro);
+  transition: box-shadow 0.2s;
+}
+
+.card:hover {
+  box-shadow: 0 0 24px 6px var(--color-ciano-claro);
+  border-color: var(--color-roxo-claro);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.deusImg {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2.5px solid var(--color-ciano-escuro);
+  box-shadow: 0 0 12px 2px var(--color-roxo-escuro);
+  background: var(--color-bg-card);
+}
+
+.nivel {
+  font-size: 1.05rem;
+  color: var(--color-roxo-claro);
+  margin-top: 0.25rem;
+  font-weight: 600;
+  text-shadow: 0 0 8px var(--color-ciano-escuro);
+}
+
+.descricao {
+  font-size: 1.08rem;
+  color: var(--color-ciano-claro);
+  margin: 0.7rem 0;
+  font-weight: 500;
+  text-shadow: 0 0 6px var(--color-roxo-escuro);
+}
+
+.bonusSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 1rem;
+  background: rgba(179,157,219,0.08);
+  border-radius: 8px;
+  padding: 0.5rem 0.7rem;
+  box-shadow: 0 0 8px var(--color-ciano-claro);
+}
+
+.bonusSection strong {
+  color: var(--color-roxo-claro);
+}
+
+.removeBtn {
+  align-self: flex-end;
+  background: var(--color-roxo-escuro);
+  color: var(--color-ciano-claro);
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  box-shadow: 0 0 8px var(--color-roxo-claro);
+  transition: background 0.2s, color 0.2s;
+}
+
+.removeBtn:hover {
+  background: var(--color-ciano-escuro);
+  color: var(--color-roxo-escuro);
+  box-shadow: 0 0 16px var(--color-ciano-claro);
+}

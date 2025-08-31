@@ -1,0 +1,103 @@
+.carrosselNavGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.carrosselWrapper {
+  background: var(--color-bg-section, #16213e);
+  border-radius: 18px;
+  box-shadow: 0 0 16px 2px var(--color-roxo-escuro, #3d0066);
+  padding: 2rem 1.2rem;
+  margin: 2rem 0;
+  color: var(--color-text, #a7ffeb);
+  border: 2px solid var(--color-ciano-escuro, #149ea3);
+  max-width: 900px;
+}
+
+.carrosselHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.2rem;
+}
+
+.addBtn {
+  background: var(--color-ciano-escuro, #149ea3);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  aspect-ratio: 1 / 1;
+  font-size: 2rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0 8px var(--color-roxo-claro, #b39ddb);
+  transition: background 0.2s, box-shadow 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.addBtn:hover {
+  background: var(--color-ciano-claro, #a7ffeb);
+  color: var(--color-roxo-escuro, #3d0066);
+  box-shadow: 0 0 16px var(--color-ciano-claro, #a7ffeb);
+}
+
+.navBtn {
+  background: var(--color-roxo-escuro, #3d0066);
+  color: var(--color-ciano-claro, #a7ffeb);
+  border: none;
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  aspect-ratio: 1 / 1;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 0 8px var(--color-ciano-escuro, #149ea3);
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navBtn:hover:not(:disabled) {
+  background: var(--color-ciano-claro, #a7ffeb);
+  color: var(--color-roxo-escuro, #3d0066);
+  box-shadow: 0 0 16px var(--color-ciano-claro, #a7ffeb);
+  transform: scale(1.1);
+}
+
+.navBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cardItem {
+  min-width: 420px;
+  flex: 0 0 auto;
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity, transform;
+}
+
+
+.cardsContainer {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.cardItem {
+  min-width: 420px;
+  flex: 0 0 auto;
+}
+
+.emptyMsg {
+  color: var(--color-roxo-claro, #b39ddb);
+  font-size: 1.1rem;
+  padding: 1.5rem;
+  text-align: center;
+  opacity: 0.7;
+}

@@ -1,7 +1,11 @@
 import React, { useState } from 'react'
 import { salvarPersonagemCompleto, supabase } from '../services/supabaseClient'
 import styles from './Criar-Ficha.module.css'
-import DivindadeModal from '../components/DivindadeModal'
+
+import DivindadeModal from '../components/DivindadeModal';
+import BencaoCarrossel from '../components/BencaoCarrossel';
+import CardBencao from '../components/CardBencao';
+import { getBencaos } from '../services/supabaseClient';
 
 export default function CriarFicha() {
   // Dados das perícias do banco agrupadas por atributo base
@@ -85,6 +89,8 @@ export default function CriarFicha() {
   const [progenitorMae, setProgenitorMae] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
   const [modalTipo, setModalTipo] = useState(null)
+  // Cada bênção tem: niveis, deus, nivelSelecionado
+  const [bencaos, setBencaos] = useState([]);
   const [divindadePai, setDivindadePai] = useState(null)
   const [divindadeMae, setDivindadeMae] = useState(null)
 
@@ -121,12 +127,14 @@ export default function CriarFicha() {
     ((isSemideus || isHibrido) && progenitorPai)
 
   const handleOrigemClick = (tipo) => {
-    setOrigemDivina(tipo)
-    // Reset progenitores ao trocar de raça
-    setProgenitorPai(false)
-    setProgenitorMae(false)
-    setDivindadePai(null)
-    setDivindadeMae(null)
+  setOrigemDivina(tipo)
+  // Reset progenitores ao trocar de raça
+  setProgenitorPai(false)
+  setProgenitorMae(false)
+  setDivindadePai(null)
+  setDivindadeMae(null)
+  // Remove todas bênçãos automáticas ao trocar de raça
+  setBencaos(prev => prev.filter(b => !b.automatica));
   }
 
   const handleProgenitorPai = () => {
@@ -146,10 +154,123 @@ export default function CriarFicha() {
     if (modalTipo === 'pai') {
       setProgenitorPai(true)
       setDivindadePai(deus)
+      // Remove bênçãos automáticas do pai anterior
+      setBencaos(prev => prev.filter(b => !(b.automatica && b.deus.nome !== deus.nome)));
+      // Adiciona bênção automática do novo pai
+      getBencaos().then(bencaosDb => {
+        const bencaosDoDeus = bencaosDb.filter(b => b.deus_id === deus.id);
+        if (bencaosDoDeus.length === 0) return;
+        const agrupadas = {};
+        bencaosDoDeus.forEach(b => {
+          if (!agrupadas[b.nome]) agrupadas[b.nome] = [];
+          agrupadas[b.nome].push(b);
+        });
+        Object.values(agrupadas).forEach(niveisArr => {
+          const niveisOrdenados = niveisArr.sort((a, b) => a.nivel - b.nivel);
+          setBencaos(prev => {
+            // Evita duplicidade
+            const jaTem = prev.some(b => b.deus.nome === deus.nome && b.automatica);
+            if (jaTem) return prev;
+            return [
+              ...prev,
+              {
+                niveis: niveisOrdenados.map(b => ({
+                  nome: b.nome,
+                  descricao: b.descricao,
+                  nivel: b.nivel,
+                  bonusAtributo: b.bonus_atributo,
+                  bonusPericia: b.bonus_pericia,
+                  valorAtributo: b.valor_atributo,
+                  valorPericia: b.valor_pericia
+                })),
+                deus: {
+                  nome: deus.nome,
+                  foto: deus.foto
+                },
+                nivelSelecionado: 1,
+                automatica: true
+              }
+            ];
+          });
+        });
+      });
     }
     if (modalTipo === 'mae') {
       setProgenitorMae(true)
       setDivindadeMae(deus)
+      // Remove bênçãos automáticas da mãe anterior
+      setBencaos(prev => prev.filter(b => !(b.automatica && b.deus.nome !== deus.nome)));
+      // Adiciona bênção automática da nova mãe
+      getBencaos().then(bencaosDb => {
+        const bencaosDoDeus = bencaosDb.filter(b => b.deus_id === deus.id);
+        if (bencaosDoDeus.length === 0) return;
+        const agrupadas = {};
+        bencaosDoDeus.forEach(b => {
+          if (!agrupadas[b.nome]) agrupadas[b.nome] = [];
+          agrupadas[b.nome].push(b);
+        });
+        Object.values(agrupadas).forEach(niveisArr => {
+          const niveisOrdenados = niveisArr.sort((a, b) => a.nivel - b.nivel);
+          setBencaos(prev => {
+            // Evita duplicidade
+            const jaTem = prev.some(b => b.deus.nome === deus.nome && b.automatica);
+            if (jaTem) return prev;
+            return [
+              ...prev,
+              {
+                niveis: niveisOrdenados.map(b => ({
+                  nome: b.nome,
+                  descricao: b.descricao,
+                  nivel: b.nivel,
+                  bonusAtributo: b.bonus_atributo,
+                  bonusPericia: b.bonus_pericia,
+                  valorAtributo: b.valor_atributo,
+                  valorPericia: b.valor_pericia
+                })),
+                deus: {
+                  nome: deus.nome,
+                  foto: deus.foto
+                },
+                nivelSelecionado: 1,
+                automatica: true
+              }
+            ];
+          });
+        });
+      });
+    }
+    if (modalTipo === 'bencao') {
+      getBencaos().then(bencaosDb => {
+        const bencaosDoDeus = bencaosDb.filter(b => b.deus_id === deus.id);
+        if (bencaosDoDeus.length === 0) return;
+        const agrupadas = {};
+        bencaosDoDeus.forEach(b => {
+          if (!agrupadas[b.nome]) agrupadas[b.nome] = [];
+          agrupadas[b.nome].push(b);
+        });
+        Object.values(agrupadas).forEach(niveisArr => {
+          const niveisOrdenados = niveisArr.sort((a, b) => a.nivel - b.nivel);
+          setBencaos(prev => [
+            ...prev,
+            {
+              niveis: niveisOrdenados.map(b => ({
+                nome: b.nome,
+                descricao: b.descricao,
+                nivel: b.nivel,
+                bonusAtributo: b.bonus_atributo,
+                bonusPericia: b.bonus_pericia,
+                valorAtributo: b.valor_atributo,
+                valorPericia: b.valor_pericia
+              })),
+              deus: {
+                nome: deus.nome,
+                foto: deus.foto
+              },
+              nivelSelecionado: 1
+            }
+          ]);
+        });
+      });
     }
   }
 
@@ -551,6 +672,29 @@ export default function CriarFicha() {
 
         </div>
       </section>
+
+      {/* Carrossel de bênçãos atribuídas */}
+      <div className="row mt-3">
+        <div className="col-md-12">
+          <h2 className={styles.nivelTitle} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <i className="fas fa-hands-helping"></i> Bênçãos
+          </h2>
+          <BencaoCarrossel
+            bencaos={bencaos}
+            onAdd={() => {
+              setModalTipo('bencao');
+              setModalOpen(true);
+            }}
+            CardBencao={CardBencao}
+            onNivelChange={(idx, nivel) => {
+              setBencaos(prev => prev.map((b, i) => i === idx ? { ...b, nivelSelecionado: nivel } : b));
+            }}
+            onRemove={idx => {
+              setBencaos(prev => prev.filter((_, i) => i !== idx));
+            }}
+          />
+        </div>
+      </div>
       <div className="d-flex justify-content-end mt-3">
         <button
           className={styles.btnSalvar}

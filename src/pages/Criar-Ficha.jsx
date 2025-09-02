@@ -8,54 +8,27 @@ import CardBencao from '../components/CardBencao';
 import { getBencaos } from '../services/supabaseClient';
 
 export default function CriarFicha() {
-  // Dados das perícias do banco agrupadas por atributo base
-  const periciasBanco = [
-    { nome: 'Desarme', atributo_base: 'forca' },
-    { nome: 'Luta Corpo a Corpo', atributo_base: 'forca' },
-    { nome: 'Arremesso', atributo_base: 'forca' },
-    { nome: 'Imobilizacao', atributo_base: 'forca' },
-    { nome: 'Potência', atributo_base: 'forca' },
-    { nome: 'Maestria com Armas', atributo_base: 'forca' },
-    // AGILIDADE
-    { nome: 'Pontaria', atributo_base: 'agilidade' },
-    { nome: 'Pilotagem', atributo_base: 'agilidade' },
-    { nome: 'Culinária', atributo_base: 'agilidade' },
-    { nome: 'Furtividade', atributo_base: 'agilidade' },
-    { nome: 'Parkour', atributo_base: 'agilidade' },
-    { nome: 'Crime', atributo_base: 'agilidade' },
-    { nome: 'Acrobacia', atributo_base: 'agilidade' },
-    { nome: 'Armas de Fogo', atributo_base: 'agilidade' },
-    { nome: 'Reflexo', atributo_base: 'agilidade' },
-    // VIGOR
-    { nome: 'Resistência a Dano', atributo_base: 'vigor' },
-    { nome: 'Fortitude', atributo_base: 'vigor' },
-    { nome: 'Tolerância', atributo_base: 'vigor' },
-    { nome: 'Recuperação', atributo_base: 'vigor' },
-    // INTELIGENCIA
-    { nome: 'Mecânica', atributo_base: 'inteligencia' },
-    { nome: 'Herborismo', atributo_base: 'inteligencia' },
-    { nome: 'Investigação', atributo_base: 'inteligencia' },
-    { nome: 'Sobrevivência', atributo_base: 'inteligencia' },
-    { nome: 'Magia', atributo_base: 'inteligencia' },
-    { nome: 'Atualidades', atributo_base: 'inteligencia' },
-    { nome: 'Medicina', atributo_base: 'inteligencia' },
-    { nome: 'Ciência', atributo_base: 'inteligencia' },
-    { nome: 'Tática', atributo_base: 'inteligencia' },
-    { nome: 'Agnição', atributo_base: 'inteligencia' },
-    { nome: 'Tecnologia', atributo_base: 'inteligencia' },
-    // PRESENCA
-    { nome: 'Carisma', atributo_base: 'presenca' },
-    { nome: 'Religião', atributo_base: 'presenca' },
-    { nome: 'Psicologia', atributo_base: 'presenca' },
-    { nome: 'Enganação', atributo_base: 'presenca' },
-    { nome: 'Percepção', atributo_base: 'presenca' },
-    { nome: 'Adestramento', atributo_base: 'presenca' },
-    { nome: 'Sedução', atributo_base: 'presenca' },
-    { nome: 'Diplomacia', atributo_base: 'presenca' },
-    { nome: 'Intimidação', atributo_base: 'presenca' },
-    // SORTE
-    { nome: 'Intuição', atributo_base: 'sorte' },
-  ];
+  // Busca as perícias do banco ao carregar a página
+  const [periciasBanco, setPericiasBanco] = React.useState([]);
+
+  React.useEffect(() => {
+    async function fetchPericias() {
+      try {
+        const { data, error } = await supabase.from('pericia').select('*');
+        if (error) {
+          console.error('Erro ao buscar perícias:', error);
+          setPericiasBanco([]);
+        } else {
+          setPericiasBanco(data || []);
+        }
+      } catch (err) {
+        console.error('Erro inesperado ao buscar perícias:', err);
+        setPericiasBanco([]);
+      }
+    }
+    fetchPericias();
+  }, []);
+
   const atributosPericia = [
     { key: 'forca', nome: 'Força', icon: 'fas fa-fist-raised' },
     { key: 'agilidade', nome: 'Agilidade', icon: 'fas fa-running' },
